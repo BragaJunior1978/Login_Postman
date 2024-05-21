@@ -1,0 +1,386 @@
+{
+	"info": {
+		"_postman_id": "8157a213-c572-47bf-a758-6892f1d4ae5e",
+		"name": "Login",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34919169"
+	},
+	"item": [
+		{
+			"name": "Teste setup",
+			"item": [
+				{
+					"name": "C - Criar usuário válido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.environment.set(\"user_id_loguin\", jsonData._id);\r",
+									"\r",
+									"pm.test(\"O código de status é 200\", function () {\r",
+									"    pm.response.to.have.status(201);  \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validação da mensagem\", function () {\r",
+									"    pm.expect(jsonData.message).to.equal(\"Cadastro realizado com sucesso\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Braga Junior\",\r\n  \"email\": \"bragajro@qa2-loguin.com.br\",\r\n  \"password\": \"teste\",\r\n  \"administrador\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/usuarios/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Executar Login",
+			"item": [
+				{
+					"name": "Sucesso - Executar login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.environment.set(\"token\", jsonData._authorization);\r",
+									"\r",
+									"pm.test(\"O código de status é 200\", function () {\r",
+									"    pm.response.to.have.status(200);  \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validação da mensagem\", function () {\r",
+									"    pm.expect(jsonData.message).to.equal(\"Login realizado com sucesso\");\r",
+									"});\r",
+									"pm.test(\"Validação de token de autorização\", function () {\r",
+									"    pm.expect(jsonData.authorization).to.not.equal(undefined);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\":\"bragajro@qa2-loguin.com.br\",\r\n  \"password\": \"teste\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "falha - Executar login usuário invalido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.environment.set(\"token\", jsonData._authorization);\r",
+									"\r",
+									"pm.test(\"O código de status é 401\", function () {\r",
+									"    pm.response.to.have.status(401);  \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validação da mensagem\", function () {\r",
+									"    pm.expect(jsonData.message).to.equal(\"Email e/ou senha inválidos\");\r",
+									"});\r",
+									"pm.test(\"Validação de token de autorização\", function () {\r",
+									"    pm.expect(jsonData.authorization).to.equal(undefined);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\":\"bragajro@qa2-loguin3.com.br\",\r\n  \"password\": \"teste\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "falha - Executar login senha invalido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.environment.set(\"token\", jsonData._authorization);\r",
+									"\r",
+									"pm.test(\"O código de status é 401\", function () {\r",
+									"    pm.response.to.have.status(401);  \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validação da mensagem\", function () {\r",
+									"    pm.expect(jsonData.message).to.equal(\"Email e/ou senha inválidos\");\r",
+									"});\r",
+									"pm.test(\"Validação de token de autorização\", function () {\r",
+									"    pm.expect(jsonData.authorization).to.equal(undefined);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\":\"bragajro@qa2-loguin.com.br\",\r\n  \"password\": \"testes\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "falha - Executar login email invalido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.environment.set(\"token\", jsonData._authorization);\r",
+									"\r",
+									"pm.test(\"O código de status é 400\", function () {\r",
+									"    pm.response.to.have.status(400);  \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validação da mensagem\", function () {\r",
+									"    pm.expect(jsonData.email).to.equal(\"email deve ser um email válido\");\r",
+									"});\r",
+									"pm.test(\"Validação de token de autorização\", function () {\r",
+									"    pm.expect(jsonData.authorization).to.equal(undefined);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\":\"bragajro@qa2-loguin,com.br\",\r\n  \"password\": \"testes\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Teste Tear Down",
+			"item": [
+				{
+					"name": "D - Excluir usuário",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/usuarios/{{user_id_loguin}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"{{user_id_loguin}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
